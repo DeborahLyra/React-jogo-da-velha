@@ -11,4 +11,4 @@ Icon.defaultProps = {
   sise : '30px'
 }
 
-export default Icon
+export default Icon 
