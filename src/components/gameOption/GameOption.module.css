@@ -9,3 +9,8 @@
   cursor: pointer;
   
 }
+
+.winner{
+  border: 2px solid rgb(235, 93, 116);
+
+}
