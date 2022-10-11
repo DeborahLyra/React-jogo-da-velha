@@ -23,6 +23,7 @@ function Game() {
   const [currentPlayer, setCurrentPlayer] = useState(-1)
   const [winner, setWinner] = useState(0)
   const [winnerLine, setWinnerLine] = useState([])
+  const [draw, setDraw] = useState(false)
 
   const hadleClick = (position) => {
     if (gameState[position] === 0 && winner === 0) {
@@ -38,28 +39,40 @@ function Game() {
       const values = line.map((value) => gameState[value])
       const sum = values.reduce((sum, val) => sum + val)
       if (sum === 3 || sum === -3) {
-      setWinner(sum / 3)
-      setWinnerLine(line)
-    }
+        setWinner(sum / 3)
+        setWinnerLine(line)
+      }
 
     })
   }
 
-  const handleReset = () =>{
-    setGameState (Array(9).fill(0)) 
-    setWinner (0)
+  const handleReset = () => {
+    setGameState(Array(9).fill(0))
+    setWinner(0)
     setWinnerLine([])
+    setDraw(false)
   }
 
-  const verifyWinnerLine = (pos) => winnerLine.find((value)=>value === pos) !== undefined
+  const verifyDraw = () => {
+    if (gameState.find((value) => value === 0) === undefined && winner === 0) {
+      setDraw(true)
+    }
+
+  }
+
+  const verifyWinnerLine = (pos) => winnerLine.find((value) => value === pos) !== undefined
 
   useEffect(() => {
     setCurrentPlayer(currentPlayer * -1)
     verifyGame()
+    verifyDraw()
   }, [gameState])
 
-  return (
+  useEffect(() => {
+    if (winner !== 0) setDraw(false)
+  }, [winner])
 
+  return (
     <div className={styles.gameContent}>
 
       <div className={styles.game}>
@@ -69,7 +82,8 @@ function Game() {
               key={`game-option-pos-${position}`}
               status={value}
               onClick={() => hadleClick(position)}
-              isWinner = {verifyWinnerLine(position)}
+              isWinner={verifyWinnerLine(position)}
+              isDraw={draw}
             />
           )
         }
@@ -77,7 +91,8 @@ function Game() {
       <GameInfo
         currentPlayer={currentPlayer}
         winner={winner}
-        onReset = {handleReset}
+        onReset={handleReset}
+        isDraw = {draw}
       />
 
 
