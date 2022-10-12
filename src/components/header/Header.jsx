@@ -1,4 +1,4 @@
-import styles from './Header.module.css'
+import styles from './header.module.css'
 
 import Title from "../title/Title"
 import Subtitle from "../subtitle/Subtitle"
